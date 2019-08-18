@@ -6,7 +6,7 @@
 ### Import
 * Import plugin to your index page:
 ```html
-    <script type="text/javascript" src="https://github.com/TryUps/PageFresh/releases/download/1.2.3/pagefresh.min.js"></script>
+<script type="text/javascript" src="https://github.com/TryUps/PageFresh/releases/download/1.2.3/pagefresh.min.js"></script>
 ```
 
 ### Usage and Configure
