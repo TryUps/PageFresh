@@ -1,4 +1,4 @@
-# PageFresh (version: 1.2.0)
+# PageFresh (version: 1.2.2)
 
 ## How use
 
@@ -12,5 +12,8 @@ const fresh = new Fresh({
     }
 });
 ```
+
+## Last Fixes
+* Fixed title error.
 
 just this.

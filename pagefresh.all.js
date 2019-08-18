@@ -2,7 +2,7 @@
 /**
  * TryUps Fresh Pages
  * Hashtag pagination very easy.
- * version: 1.2.1
+ * version: 1.2.2
  */
 const Fresh = function({el, settings}){
     el = el || "body";
@@ -29,7 +29,10 @@ Fresh.prototype.load = function(url){
             const results = await Promise.all(url.map((url) => fetch(folder + url + ".html").then((r) => r.text())));
             return results;
         }
-        request().then(data => this.el.innerHTML = data.toString());
+        request().then(data => {
+            this.el.innerHTML = data.toString() 
+            this.setTitle()
+        });
     }else{
         const request = async () => {
             let response = await fetch("pages/" + url + ".html");
@@ -42,6 +45,7 @@ Fresh.prototype.load = function(url){
                 data = "Error 404, page not found.";
             }
             this.el.innerHTML = data.toString();
+            this.setTitle();
         });
     }
 }
@@ -57,7 +61,6 @@ Fresh.prototype.go = function(){
         }
     }
     this.load(url);
-    this.setTitle();
 }
 
 Fresh.prototype.setTitle = function(){
@@ -73,8 +76,8 @@ Fresh.prototype.setTitle = function(){
         if(pgTitle == null || pgTitle == ""){
             pgTitle = "Error!";
         }
-        document.title = this.title + " – " + pgTitle;
-    },300);
+        document.title = that.title + " – " + pgTitle;
+    },100);
 }
 
 Fresh.prototype.hashHandler = function(){
