@@ -1,67 +1,96 @@
-(function() {
-    const $ = function(elem) {
-        if (!(this instanceof $))
-        return new $(elem);
-        this.e = document.querySelector(elem);
-    };  
-    $.fn = $.prototype = {
-    
-        init: function () {return false;}
+"use strict";
+/**
+ * TryUps Fresh Pages
+ * Hashtag pagination very easy.
+ * version: 1.2.0
+ */
+const Fresh = function({el, settings}){
+    el = el || "body";
+    this.el = document.querySelector(el);
+    this.settings = {};
+    this.settings = settings | {
+        "module":false,
+        "folder":"/pages/",
+        "home":"#!/home"
     };
-    $.fn.html = function(html){
-        return this.e.innerHTML = html;
-    }
-    $.fn.load = function (url) {
-        if(Array.isArray(url) == true){
-            const request = async() => {
-                const results = await Promise.all(url.map((url) => fetch("pages/" + url + ".html").then((r) => r.text())));
-                return results;
-            }
-            request().then(data => this.e.innerHTML = data.toString());
-        }else{
-            const request = async () => {
-                let response = await fetch("pages/" + url + ".html");
-                var data = await response.text();
-                return data;
-            }
-            var lock = [];
-            request().then(data => {
 
-                this.e.innerHTML = data;
-            
-            });
+    window.onhashchange = this.go();
+    this.hashHandler();
+}
+
+Fresh.prototype.load = function(url){
+    if(url == "[object HashChangeEvent]"){
+        url = location.hash.slice(3);
+    }
+    if(Array.isArray(url) == true){
+        const request = async() => {
+            const folder = this.settings.folder || "/pages/";
+            const results = await Promise.all(url.map((url) => fetch(folder + url + ".html").then((r) => r.text())));
+            return results;
         }
+        request().then(data => this.el.innerHTML = data.toString());
+    }else{
+        const request = async () => {
+            let response = await fetch("pages/" + url + ".html");
+            var data = await response.text();
+            return data;
+        }
+        var lock = [];
+        request().then(data => {
+            if(data == undefined){
+                data = "Error 404, page not found.";
+            }
+            this.el.innerHTML = data.toString();
+        });
     }
+}
 
-    const goTo = function(){
-        var url = location.hash.slice(3);
-        if(url == ""){
-            location.hash = "#!/home";
+Fresh.prototype.go = function(){
+    let url = location.hash.slice(3);
+    if(url == ""){
+        location.hash =  this.settings.home || "#!/home";
+        if(!this.settings.home){
             url = "home";
+        }else{
+            url = this.settings.home.slice(3);
         }
-        var pageUrl = url; 
-        $(".content").load(url);
-        setTimeout(function(){
-            var pageTitle = document.querySelector("section");
-            if(!pageTitle){
-                pageTitle = "Page Error!";
-            }else{
-                pageTitle = pageTitle.getAttribute("alt");
-            }
-            if(pageTitle == null || pageTitle == ""){
-                pageTitle = "Page Error!";
-            }
-            
-            document.title = "Ary Sinteco – " + pageTitle;
-        }, 100)
     }
+    this.load(url);
+    this.setTitle();
+}
 
-    window.addEventListener('hashchange', function() {
-        goTo();
-    }, false);
+Fresh.prototype.setTitle = function(){
+    setTimeout(function(){
+        let pgTitle = document.querySelector("meta[name='fresh']");
+        let pgEl = pgTitle;
+        if(!pgTitle){
+            pgTitle == "Error!";
+        }else{
+            pgTitle = pgTitle.getAttribute("value");
+            pgEl.remove();
+        }
+        if(pgTitle == null || pgTitle == ""){
+            pgTitle = "Error!";
+        }
+        document.title = document.title + " – " + pgTitle;
+    },300);
+}
 
-    window.onhashchange = goTo();
+Fresh.prototype.hashHandler = function(){
+    this.oldHash = window.location.hash;
+    this.Check;
+    var that = this;
+    var detect = function(){
+        if(that.oldHash!=window.location.hash){
+            that.oldHash = window.location.hash;
+            that.go();
+        }
+    };
+    this.Check = setInterval(function(){ detect() }, 100);
+}
 
-    window.$ = $;
-
-})();
+try {
+    module.exports = exports = Fresh;
+} catch (e) {
+    // nothing
+}
