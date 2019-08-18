@@ -1,4 +1,4 @@
-# PageFresh (version: 1.2.2)
+# PageFresh (version: 1.2.3)
 
 ## How use
 
@@ -14,6 +14,6 @@ const fresh = new Fresh({
 ```
 
 ## Last Fixes
-* Fixed title error.
+* Fixed non declared variable that error.
 
 just this.
