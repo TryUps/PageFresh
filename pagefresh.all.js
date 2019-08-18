@@ -2,7 +2,7 @@
 /**
  * TryUps Fresh Pages
  * Hashtag pagination very easy.
- * version: 1.2.0
+ * version: 1.2.1
  */
 const Fresh = function({el, settings}){
     el = el || "body";
@@ -13,6 +13,7 @@ const Fresh = function({el, settings}){
         "folder":"/pages/",
         "home":"#!/home"
     };
+    this.title = document.title;
 
     window.onhashchange = this.go();
     this.hashHandler();
@@ -72,7 +73,7 @@ Fresh.prototype.setTitle = function(){
         if(pgTitle == null || pgTitle == ""){
             pgTitle = "Error!";
         }
-        document.title = document.title + " – " + pgTitle;
+        document.title = this.title + " – " + pgTitle;
     },300);
 }
 
