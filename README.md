@@ -1,4 +1,6 @@
 # PageFresh (version: 1.2.3)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTryUps%2FPageFresh.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FTryUps%2FPageFresh?ref=badge_shield)
+
 
 ## How use
 
@@ -24,3 +26,7 @@ const fresh = new Fresh({
 * Fixed non declared variable that error.
 
 just this.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTryUps%2FPageFresh.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FTryUps%2FPageFresh?ref=badge_large)
